@@ -1,0 +1,2 @@
+# Partial-replication-of-Gu-Kelly-Xiu-2020-Empirical-Asset-Pricing-via-Machine-Learning.
+This is my own attempt to replicate some of the key findings in the paper Empirical Asset Pricing via Machine Learning by Gu, Kelly, &amp; Xiu (2020). Specifically, I use neural network with 3 hidden layers to predict US stocks' excess returns and evaluate the model's performance based on 30-year out-of-sample testing.
