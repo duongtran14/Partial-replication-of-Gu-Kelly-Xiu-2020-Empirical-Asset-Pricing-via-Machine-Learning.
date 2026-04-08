@@ -1,22 +1,35 @@
 # Partial-replication-of-Gu-Kelly-Xiu-2020-Empirical-Asset-Pricing-via-Machine-Learning.
-This is my own attempt to replicate some of the key findings in the paper Empirical Asset Pricing via Machine Learning by Gu, Kelly, &amp; Xiu (2020)[^1]. Specifically, I use **neural networks with 3 hidden layers** ("NN3") to predict US stocks' excess returns and evaluate the model's performance based on **30-year out-of-sample testing**. The paper, using a total of **920 baseline predictors** (including 94 stock-level characteristics, 8 macro-economic predictors), has shown that machine learning models, notably trees and neural networks, are very promising for algorithmic trading strategies and can yield large economic gains to investors, demonstrated by a high out-of-sample $R^2$ and Sharpe ratio using a decile-sorted machine learning portfolio strategy (compared to existing literature and other simple regression-based methods). 
+This is my own attempt to replicate some of the key findings in the paper Empirical Asset Pricing via Machine Learning by Gu, Kelly, &amp; Xiu (2020)[^1]. Here, I use **neural networks with 3 hidden layers** ("NN3") to predict US stock excess returns and evaluate the model's performance for the period **1987-2021, i.e 35-year out-of-sample testing** (1987-2016 in the original paper). The paper, using a total of **920 baseline predictors** (including 94 stock-level characteristics, 8 macro-economic predictors), has shown that machine learning models, notably trees and neural networks, are very promising for algorithmic trading strategies and can yield large economic gains to investors, demonstrated by a high out-of-sample $R^2$ and Sharpe ratio using a decile-sorted machine learning portfolio strategy compared to existing literature and other simple regression-based methods. 
 
-Some of my successful replicated statistics are: *(i)* A pooled out-of-sample $R^2$ of 0.38\% (0.40\% in original paper); *(ii)* An **average monthly returns of 3.23\%** (3.27\% in original paper) with **annualized Sharpe ratio of 2.5\%** (2.36\% in original paper) using long-short equally-weighted portfolios, with a low maximum drawdown of 8.88\% (17.34\% in orginal paper); *(iii)* **Risk-adjusted return (alpha)** of **3.12%** for equally-weighted portfolios (3.02\% in the original paper).
+## Files
+- `1_Preprocessing.ipynb`: Download raw data and compute input data for model training, validation, and testing;
+- `2_NN3.ipynb`: Use 3-hidden-layer neural networks to train, validate, and generate excess return predictions for each year from 1987-2021;
+- `3_PortfPerformance_replicated.ipynb`: Decile-sort stocks based on their return predictions and adopt a zero-net (dollar-neutral) investment strategy: long highest-decile stocks and short lowest-decile stocks; Compare results with original paper for the period of 1987-2016 (30 years);
+- `4_PortfPerformance_extended.ipynb`:
+   - Extend the testing period to 35 years, from 1987-2021;
+   - Adopt both dollar-neutral strategy and beta-neutral strategy;
+   - Create monthly and overall performance results for dashboard.
+- `5_Dashboard.py`: Script to create an interactive dashboard to display backtest results in `4_PortfPerformance_extended.ipynb` using dash packages. 
+## Extended results
+- All results are displayed on [this Dashboard](https://552be8c0-1f06-4c2e-ad9d-1fb20ed36122.plotly.app/);
+- For both dollar-neutral and beta-neutral strategies, equally-weighted portfolios perform way better than value-weighted portfolios. This is because the model is trained on equally-weighted stocks, while monthly cross section is dominated with small-cap stocks, which are more exposed to mispricing and easier to predict than large-cap stocks;
+- Beta-neutral strategy's raw returns are slightly below dollar-neutral strategy's, but their risk-adjusted returns, alphas, are almost similar. Moreover, beta-neutral strategy has significantly lower turnover. These findings show that beta-neutral strategy can potentially be more beneficial in terms of returns after costs.
 
-Cummulative returns are shown below *(Note: These are not in the original paper; the authors only show the average statistics, which are described in Replication results section. This figure is in notebook `3_MLportfolios`)*
+<p align="center">Dollar-neutral and Beta-neutral Equally-weighted Portfolios.</p>
 
+![Dash_1](https://github.com/user-attachments/assets/6c92c671-b487-4940-b3ae-d007606b460a)
 
-<img width="1800" height="1000" alt="LSret" src="https://github.com/user-attachments/assets/9727d288-c18e-4f86-a272-8645e86d45fe" />
+<p align="center">Dollar-neutral and Beta-neutral Value-weighted Portfolios.</p>
 
-
+![Dash_2](https://github.com/user-attachments/assets/f398ce7a-bb9b-4899-a72d-cc7e96af0a02)
 
 ## Replication results
-For both equally-weighted and value-weighted portfolios, my model did a pretty good job in predicting stocks' excess returns in the highest decile, while not so much for the lowest decile. The actual returns of the short portfolios are much higher than predicted, which is more notable for value-weighted portfolios, leading to lower-than-expected long-short spreads. However, because I only estimate the model with an ensemble of 5 random seeds due to limited resources while the orignal paper uses 10, I believe that the predictive accuracy can vastly improve with a larger ensemble.
+For both equally-weighted and value-weighted portfolios, stock excess returns in the highest decile predictions are more accurate than those in the lowest decile. The actual returns of the short portfolios are much higher than predicted, which is more notable for value-weighted portfolios, leading to lower-than-expected long-short spreads. However, because I only estimate the model with an ensemble of 5 random seeds due to limited resources while the orignal paper uses 10, I believe that the predictive accuracy can vastly improve with a larger ensemble.
 
 All of my replication results are described below. I denote "good"/ "not good" for statistics that are close/ not close to the ones in the original paper.
 
 - Monthly out-of-sample stock-level prediction performance using NN3 (percentage $R^2$)
-(notebook `2_NN3`, table `Table_1_Monthly_outofsample_stocklevel_prediction`)
+(notebook `2_NN3.ipynb`, table `Table_1_Monthly_outofsample_stocklevel_prediction`)
   
 | | Replicated  | Original | Replication quality |
 |---|---|---|---|
@@ -24,7 +37,7 @@ All of my replication results are described below. I denote "good"/ "not good" f
 | Top 1000 by market value  |  0.42| 0.70| not good |
 | Bottom 1000 by market value  | 0.72| 0.45| good |
 
-- Performance of equally-weighted machine learning portfolios (notebook `3_MLportfolios`, table `Table_A9_Performance_of_equally_weighted_MLportfolios_NN3` and `Table_A9_Comparison_with_Originalpaper`).
+- Performance of equally-weighted machine learning portfolios (notebook `3_MLportfolios.ipynb`, table `Table_A9_Performance_of_equally_weighted_MLportfolios_NN3` and `Table_A9_Comparison_with_Originalpaper`).
 
 Out-of-sample stocks are sorted to 10 deciles each month based on their predicted returns. "H-L" denotes a zero-net strategy where we long all stocks in the highest decile and short all stocks in the lowest decile. All statistics are monthly average, except for annualized Sharpe ratio.
   
@@ -43,7 +56,7 @@ Out-of-sample stocks are sorted to 10 deciles each month based on their predicte
 | | Observed std | 4.48  | 4.80 | good |
 | | Sharpe ratio | 2.50 | 2.36 | good |
 
-- Performance of value-weighted machine learning portfolios (notebook `3_MLportfolios`, table `Table_7_Performance_of_value_weighted_MLportfolios_NN3` and `Table_7_Comparison_with_Originalpaper`).
+- Performance of value-weighted machine learning portfolios (notebook `3_MLportfolios.ipynb`, table `Table_7_Performance_of_value_weighted_MLportfolios_NN3` and `Table_7_Comparison_with_Originalpaper`).
 
 Out-of-sample stocks are sorted to 10 deciles each month based on their predicted returns. "H-L" denotes a zero-net strategy where we long all stocks in the highest decile and short all stocks in the lowest decile. All statistics are monthly average, except for annualized Sharpe ratio.
   
@@ -52,7 +65,7 @@ Out-of-sample stocks are sorted to 10 deciles each month based on their predicte
 |decile 1 | Predicted returns | -1.04 | -0.03 | not good |
 | | Observed returns | -0.11 | -0.43 | not good |
 | | Observed std | 7.21 | 7.73 | good |
-| | Sharpe ratio | -0.05 | -0.19 | good |
+| | Sharpe ratio | -0.05 | -0.19 | not good |
 |decile 10 | Predicted returns | 1.95 | 1.83 | not good |
 | | Observed returns | 1.54 | 1.69 | not good |
 | | Observed std | 7.26 | 7.29 | good |
@@ -62,7 +75,7 @@ Out-of-sample stocks are sorted to 10 deciles each month based on their predicte
 | | Observed std | 5.10 | 6.13 | good |
 | | Sharpe ratio | 1.12 | 1.20 | good |
 
-- Drawdown and Turnover of machine learning portfolios (notebook `3_MLportfolios`):
+- Drawdown and Turnover of machine learning portfolios (notebook `3_MLportfolios.ipynb`):
 
 | | | Replicated  | Original | Replication quality |
 |---|---|---|---|---|
@@ -71,15 +84,15 @@ Value weighted | Max drawdown (%) | 26.78 | 30.84 | good |
 | | Turnover (%) | 128.46 | 123.50 | good |
 | | Mean return (%) | 1.65 | 2.12 | not good |
 | | Risk-adjusted return (alpha) (%) | 1.36 | 1.52 | not good |
-| | alpha t-stat (%) | 4.99 | 4.92 | good |
+| | alpha t-stat (%) | 5.13 | 4.92 | good |
 Equally weighted | Max drawdown (%) | 8.88 | 17.34 | good |
 | | Max 1M loss (%) | 8.09 | 12.50 | good |
 | | Turnover (%) | 116.66 | 113.76 | good |
 | | Mean return (%) | 3.23 | 3.27 | not good |
 | | Risk-adjusted return (alpha) (%) | 3.12 | 3.02 | good |
-| | alpha t-stat (%) | 4.63 | 11.70 | good, less but still highly significant |
+| | alpha t-stat (%) | 12.68 | 11.70 | good |
 
-## Replication process
+## Process
 
 ### 1. Input data
 - Monthly stock-level characteristics: downloaded from one of the authors, [Xiu's webpage](https://dachxiu.chicagobooth.edu/download/datashare.zip). The data span from 1957 to 2016 (60 years), where the last 30 years, from 1987 to 2016, are used for out-of-sample testing. According to the author's note, these are already one-month lagged characteristics, i.e for the month 1957-01, the characteristics are computed using the most updated information available prior to 1957-01;
@@ -89,18 +102,18 @@ Equally weighted | Max drawdown (%) | 8.88 | 17.34 | good |
   
 ### 2. Preprocessing data
 
-Notebook `1_Preprocessing` is where I preprocess the above input data, strictly following the paper, namely:
+Notebook `1_Preprocessing.ipynb` is where I preprocess the above input data, strictly following the paper:
 
 - Monthly stock-level characteristics:
   - Fill NA values with the cross-sectional median at each month for each stock;
   - Cross-sectionally rank stocks each month and map these ranks to the [-1,1] interval.
 - Monthly macro-economic predictors data: Calculate 8 monthly predictors: (i) dividend-price ratio, (ii) earnings-price ratio, (iii), book-to-market ratio, (iv) net equity expansion, (v) Treasury-bill rate, (vi) term spread, (vii) default spread, (viii) and stock variance (svar).
-- Calculate interaction terms between stock characteristics and macro-economic predictors; One-hot encoded industry SIC dummies; Creating a (3743049 x 920) design matrix;
-- Calculate stocks' excess returns;
-- Recursively split the sample 30 times into 3 subsets: training, validation, and testing samples. The first split has training sample spanning from 1957-1974, validation sample spanning from 1975-1986, and testing sample is 1987. Each time the training sample is increased by one year while the validation sample length is always fixed (12 years).
+- Calculate interaction terms between stock characteristics and macro-economic predictors; One-hot encoded industry SIC dummies; Creating a design matrix;
+- Calculate stock excess returns;
+- Recursively split the sample 30 times into 3 subsets: training, validation, and testing samples. The first split has training sample spanning from 1957-1974, validation sample spanning from 1975-1986, and testing sample is 1987. Each time the training sample is increased by one year while the validation sample length is always fixed with 12 years.
 
 ### 3. Training and Testing
-Notebook `2_NN3` is where I train neural networks with 3 hidden layers and generate 30-year out-of-sample excess returns predictions. The pooled out-of-sample $R^2$ for all stocks, for top 1000 stocks and for bottom 1000 stocks by market values can be found at the very end of the notebook.
+Notebook `2_NN3.ipynb` is where I train neural networks with 3 hidden layers and generate 30-year out-of-sample excess returns predictions. The pooled out-of-sample $R^2$ for all stocks, for top 1000 stocks and for bottom 1000 stocks by market values can be found at the very end of the notebook.
 
 - Create a neural networks specification with 03 hidden layers, activation function is ReLU, and Batch Normalization layers are applied after ReLU transformation, except for the last activation layer;
 - Specify parameters grid:
@@ -117,12 +130,11 @@ Notebook `2_NN3` is where I train neural networks with 3 hidden layers and gener
 - The model that gives minimum validation loss is chosen;
 - Use the chosen model to generate predictions for testing sample;
 - Run with different seeds and average testing predictions across seeds to get the final predictions for each year;
-- Repeat the process to get the pooled out-of-sample predictions for 30 years.
+- Repeat the process to get the pooled out-of-sample predictions for 35 years.
 
-### 4. Construct and evaluate machine learning portfolios
-
-Notebook `3_MLportfolios` is where i evaluate machine-learning portfolios performance:
-- Construct decile-sorted portfolios based on individual stock excess return predictions, both equally and value weighted;
+### 4. Backtesting with machine learning portfolios
+- Construct decile-sorted portfolios based on individual stock excess return predictions, both equally and value weighted. Denote long stocks' weights as positive and short stocks' weights as negative, which gives individual stock's dollar-neutral weights;
+- For beta-neutral weights: each month, minimize $||w_{i,beta} - w_{i,signal}||^{2}$ w.r.t $w_{i,beta}$ s.t $\sum_{i=1}^N w_{i,beta} = 0$ and $\sum_{i=1}^N w_{i,beta}\beta_{i} = 0$, where $\beta_i$ is individual stock's market beta, estimated with 30-month rolling window;
 - Compute long-short portfolios average monthly returns and annualized Sharpe ratio;
 - Compute max drawdown, max 1M loss, turnover, and risk-adjusted return of each strategy.
 
