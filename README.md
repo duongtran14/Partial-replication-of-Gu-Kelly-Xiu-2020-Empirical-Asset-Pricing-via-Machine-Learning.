@@ -11,7 +11,7 @@ This is my own attempt to replicate some of the key findings in the paper Empiri
    - Create monthly and overall performance results for dashboard.
 - `5_Dashboard.py`: Script to create an interactive dashboard to display backtest results in `4_PortfPerformance_extended.ipynb` using dash packages. 
 ## Extended results
-- All results are displayed on [this Dashboard](https://552be8c0-1f06-4c2e-ad9d-1fb20ed36122.plotly.app/);
+- All results are displayed on [this Dashboard](https://d44fa0f9-5361-4bc5-9870-9156431df00f.plotly.app);
 - For both dollar-neutral and beta-neutral strategies, equally-weighted portfolios perform way better than value-weighted portfolios. This is because the model is trained on equally-weighted stocks, while monthly cross section is dominated with small-cap stocks, which are more exposed to mispricing and easier to predict than large-cap stocks;
 - Beta-neutral strategy's raw returns are slightly below dollar-neutral strategy's, but their risk-adjusted returns, alphas, are almost similar. Moreover, beta-neutral strategy has significantly lower turnover. These findings show that beta-neutral strategy can potentially be more beneficial in terms of returns after costs.
 
