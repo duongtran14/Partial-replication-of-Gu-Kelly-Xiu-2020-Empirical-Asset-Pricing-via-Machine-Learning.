@@ -13,15 +13,16 @@ This is my own attempt to replicate some of the key findings in the paper Empiri
 ## Extended results
 - All results are displayed on [this Dashboard](https://d44fa0f9-5361-4bc5-9870-9156431df00f.plotly.app);
 - For both dollar-neutral and beta-neutral strategies, equally-weighted portfolios perform way better than value-weighted portfolios. This is because the model is trained on equally-weighted stocks, while monthly cross section is dominated with small-cap stocks, which are more exposed to mispricing and easier to predict than large-cap stocks;
-- Beta-neutral strategy's raw returns are slightly below dollar-neutral strategy's, but their risk-adjusted returns, alphas, are almost similar. Moreover, beta-neutral strategy has significantly lower turnover. These findings show that beta-neutral strategy can potentially be more beneficial in terms of returns after costs.
+- Beta-neutral strategy's alphas are approximately equal to dollar-neutral strategy's, which suggests that the model's raw signals (before removing beta) are not mainly explained by market exposure, though this depends on the factor model used;
+- Beta-neutralization does not materially increase trading intensity, suggested by the same level of turnover.
 
 <p align="center">Dollar-neutral and Beta-neutral Equally-weighted Portfolios.</p>
 
-![Dash_1](https://github.com/user-attachments/assets/6c92c671-b487-4940-b3ae-d007606b460a)
+![Dash_1](https://github.com/user-attachments/assets/29e9f4c9-1892-4431-a91e-25b3cd74fe39)
 
 <p align="center">Dollar-neutral and Beta-neutral Value-weighted Portfolios.</p>
 
-![Dash_2](https://github.com/user-attachments/assets/f398ce7a-bb9b-4899-a72d-cc7e96af0a02)
+![Dash_2](https://github.com/user-attachments/assets/e23a1423-9447-4487-85a0-450ab77e0db8)
 
 ## Replication results
 For both equally-weighted and value-weighted portfolios, stock excess returns in the highest decile predictions are more accurate than those in the lowest decile. The actual returns of the short portfolios are much higher than predicted, which is more notable for value-weighted portfolios, leading to lower-than-expected long-short spreads. However, because I only estimate the model with an ensemble of 5 random seeds due to limited resources while the orignal paper uses 10, I believe that the predictive accuracy can vastly improve with a larger ensemble.
