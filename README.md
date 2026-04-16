@@ -12,9 +12,11 @@ This is my own attempt to replicate some of the key findings in the paper Empiri
 - `5_Dashboard.py`: Script to create an interactive dashboard to display backtest results in `4_PortfPerformance_extended.ipynb` using dash packages. 
 ## Extended results
 - All results are displayed on [this Dashboard](https://d44fa0f9-5361-4bc5-9870-9156431df00f.plotly.app);
-- For both dollar-neutral and beta-neutral strategies, equally-weighted portfolios perform way better than value-weighted portfolios. This is because the model is trained on equally-weighted stocks, while monthly cross section is dominated with small-cap stocks, which are more exposed to mispricing and easier to predict than large-cap stocks;
-- Beta-neutral strategy's returns and alphas are approximately equal to dollar-neutral strategy's, which suggests that the model's raw weight signals (before removing beta) are not mainly explained by market exposure, though this depends on the factor model used;
-- Beta-neutralization can potentially increase trading intensity, suggested by slightly higher turnover.
+- For both dollar-neutral and beta-neutral strategies, equally-weighted portfolios perform way better than value-weighted portfolios, which suggests that signal strength is concentrated in small-cap/volatile stocks, and less effective in large-cap universes;
+- The model produced positive alphas even after market-neutralization, suggesting it captures cross-sectional ranking/structure rather than only market exposure;
+- Despite positive out-of-sample average returns and alphas, drawdown periods across time indicated the model's sensitivity to market condition;
+- High turnover implied potential high transaction costs, further challenge implementability;
+- **Overall, the signals are promising but still unstable, which require more validation and robustness check. Signal strength should be tested further with turnover constraint and/or leverage constraint for evaluation of implementability.**
 
 <p align="center">Dollar-neutral and Beta-neutral Equally-weighted Portfolios.</p>
 
